@@ -5,6 +5,7 @@ import {
   ChartNoAxesCombined,
   CheckCircle2,
   Leaf,
+  Linkedin,
   Mail,
   MapPin,
   Menu,
@@ -606,6 +607,102 @@ export default function App() {
             </form>
           </div>
         </section>
+
+        <footer className="perf-section border-t border-[#1f2d28] bg-[#07140f] py-14 text-slate-300 sm:py-16">
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+              <div>
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-md border border-emerald-500/40 bg-[#0c1d17] text-emerald-400">
+                    <Sparkles size={14} />
+                  </span>
+                  <p className="font-['Plus_Jakarta_Sans'] text-lg font-extrabold text-white">APEX</p>
+                </div>
+                <p className="max-w-xs text-sm leading-relaxed text-slate-400">
+                  UK-based specialist consultancy providing environmental, sustainability, fire safety,
+                  and building compliance services nationwide.
+                </p>
+                <a
+                  href="#"
+                  className="mt-5 inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-700 bg-[#10231c] text-slate-300 transition hover:border-emerald-500/50 hover:text-emerald-300"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin size={15} />
+                </a>
+              </div>
+
+              <div>
+                <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-white">Services</h4>
+                <ul className="space-y-2.5 text-sm text-slate-400">
+                  {[
+                    "Energy & Sustainability",
+                    "Environmental Consultancy",
+                    "Fire Engineering & Safety",
+                    "Compliance & Building Regulations",
+                    "Testing & Certification",
+                  ].map((service) => (
+                    <li key={service}>
+                      <a href="#services" className="transition hover:text-emerald-300">
+                        {service}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-white">Sectors</h4>
+                <ul className="space-y-2.5 text-sm text-slate-400">
+                  {[
+                    "Residential Developments",
+                    "Commercial Offices",
+                    "Industrial Facilities",
+                    "Retail & Mixed Use",
+                    "Healthcare",
+                    "Education",
+                    "Infrastructure",
+                  ].map((sector) => (
+                    <li key={sector}>
+                      <a href="#sectors" className="transition hover:text-emerald-300">
+                        {sector}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-white">Contact</h4>
+                <ul className="space-y-3 text-sm text-slate-400">
+                  <li className="flex items-start gap-2.5">
+                    <Mail size={14} className="mt-0.5 text-emerald-400" />
+                    <span>sohaibmayo12@gmail.com</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Phone size={14} className="mt-0.5 text-emerald-400" />
+                    <span>+44 7700 900 000</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <MapPin size={14} className="mt-0.5 text-emerald-400" />
+                    <span>United Kingdom - Nationwide</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-10 flex flex-col gap-3 border-t border-[#1f2d28] pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+              <p>© 2026 Apex Built Environment Consultancy Ltd. All rights reserved.</p>
+              <div className="flex items-center gap-5">
+                <a href="#" className="transition hover:text-slate-300">
+                  Privacy Policy
+                </a>
+                <a href="#" className="transition hover:text-slate-300">
+                  Terms & Conditions
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   );
