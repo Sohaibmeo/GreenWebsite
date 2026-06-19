@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   ArrowRight,
   Building2,
@@ -26,36 +26,147 @@ type EnquiryForm = {
 };
 
 const NAV_LINKS = [
+  { label: "Expertise", href: "#expertise" },
   { label: "Services", href: "#services" },
+  { label: "Sectors", href: "#sectors" },
   { label: "Why Us", href: "#why-us" },
   { label: "Process", href: "#process" },
   { label: "Contact", href: "#contact" },
 ];
 
+const REGULATORY_BADGES = [
+  "Approved Document L",
+  "Approved Document O",
+  "Part B",
+  "Part E",
+  "Part F",
+  "BREEAM",
+  "BNG",
+  "TM52",
+  "TM59",
+  "BS5837",
+];
+
+const CORE_COMPETENCIES = [
+  "Planning Support",
+  "Sustainability",
+  "Fire Engineering",
+  "Certification",
+];
+
 const SERVICES = [
   {
-    title: "Energy and Sustainability",
-    description:
-      "SAP, SBEM, EPC, and Part L optimisation that balances planning certainty with build-cost discipline.",
+    title: "Energy & Sustainability",
+    description: "Performance-led modelling and compliance strategy for planning and building control.",
     icon: ChartNoAxesCombined,
+    items: ["SAP Calculations", "SBEM Modelling", "EPC Certificates", "Part L Compliance"],
   },
   {
-    title: "Environmental Advisory",
-    description:
-      "Air quality, noise, drainage, flood risk, and biodiversity reporting aligned to local authority expectations.",
+    title: "Environmental Consultancy",
+    description: "Technical assessments aligned to local authority and planning requirements.",
     icon: Leaf,
+    items: [
+      "Flood Risk Assessments",
+      "BNG Assessments",
+      "Ecology Surveys",
+      "Air Quality Assessments",
+    ],
   },
   {
-    title: "Fire and Regulatory Safety",
-    description:
-      "Fire strategy, Part B support, and technical compliance pathways for complex residential and mixed-use schemes.",
+    title: "Fire Engineering & Safety",
+    description: "Clear pathways for life safety design and fire-related regulatory approvals.",
     icon: ShieldCheck,
+    items: [
+      "Fire Strategy Reports",
+      "Part B Compliance",
+      "Means of Escape Analysis",
+      "Smoke Ventilation Advice",
+    ],
   },
   {
-    title: "Planning to Completion Support",
-    description:
-      "A single technical partner from pre-application through approvals, construction, and certification.",
+    title: "Compliance & Building Regulations",
+    description: "Targeted compliance support to reduce approval risk and keep submissions technically robust.",
+    icon: CheckCircle2,
+    items: [
+      "Planning Compliance",
+      "Part B, E, F and O Support",
+      "Building Regulations Strategy",
+      "Technical Submission Reviews",
+    ],
+  },
+  {
+    title: "Testing & Certification",
+    description: "Verification services and certification outputs that support sign-off confidence.",
     icon: Building2,
+    items: [
+      "Airtightness Testing",
+      "Sound Testing",
+      "TM44 Inspections",
+      "Compliance Certification",
+    ],
+  },
+  {
+    title: "Need Guidance?",
+    description:
+      "Not every development requires the same assessments or compliance pathway. Our consultants can review your project and identify the reports and approvals required.",
+    icon: Sparkles,
+    items: [
+      "Early Project Triage",
+      "Assessment Roadmap",
+      "Approval Strategy",
+      "Single Point Advice",
+    ],
+  },
+];
+
+const SECTORS = [
+  {
+    title: "Residential Developments",
+    description: "Homes, apartments, and mixed-tenure projects needing planning and regulatory confidence.",
+    image:
+      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=640&h=420&fit=crop&auto=format",
+  },
+  {
+    title: "Commercial Offices",
+    description: "New and refurbished office schemes requiring sustainability and building compliance support.",
+    image:
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=640&h=420&fit=crop&auto=format",
+  },
+  {
+    title: "Industrial Facilities",
+    description: "Warehouse and manufacturing developments with specialist environmental and fire considerations.",
+    image:
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=640&h=420&fit=crop&auto=format",
+  },
+  {
+    title: "Healthcare",
+    description: "Clinical and care environments requiring robust technical and life safety compliance pathways.",
+    image:
+      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=640&h=420&fit=crop&auto=format",
+  },
+  {
+    title: "Education",
+    description: "Schools and campus buildings with strong requirements around comfort, safety, and efficiency.",
+    image:
+      "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=640&h=420&fit=crop&auto=format",
+  },
+  {
+    title: "Hospitality",
+    description: "Hotels and leisure spaces balancing guest comfort, energy use, and regulatory obligations.",
+    image:
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=640&h=420&fit=crop&auto=format",
+  },
+  {
+    title: "Retail & Mixed Use",
+    description: "Retail-led and mixed-use schemes requiring integrated planning, compliance, and fire support.",
+    image:
+      "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=640&h=420&fit=crop&auto=format",
+  },
+  {
+    title: "Infrastructure",
+    description: "Public and strategic infrastructure projects with multi-disciplinary technical requirements.",
+    image:
+      "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=640&h=420&fit=crop&auto=format",
   },
 ];
 
@@ -70,10 +181,12 @@ const PROJECT_TYPES = [
 ];
 
 const SERVICE_OPTIONS = [
-  "Energy and Sustainability",
-  "Environmental Advisory",
-  "Fire and Regulatory Safety",
-  "Planning to Completion Support",
+  "Energy & Sustainability",
+  "Environmental Consultancy",
+  "Fire Engineering & Safety",
+  "Compliance & Building Regulations",
+  "Testing & Certification",
+  "Need Guidance",
   "Multiple Services",
 ];
 
@@ -94,16 +207,6 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formMessage, setFormMessage] = useState("");
   const [formError, setFormError] = useState("");
-
-  const trustStats = useMemo(
-    () => [
-      { value: "500+", label: "Projects Delivered" },
-      { value: "24h", label: "Average Response" },
-      { value: "98%", label: "Approval Success Support" },
-      { value: "UK", label: "Nationwide Coverage" },
-    ],
-    []
-  );
 
   const updateField = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -153,7 +256,7 @@ export default function App() {
     <div className="site-shell bg-[var(--bg-canvas)] text-[var(--ink-900)] min-h-screen overflow-x-hidden">
       <div className="ambient-layer" aria-hidden="true" />
 
-      <header className="sticky top-0 z-50 border-b border-white/40 bg-[#f6fbf8]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-white/50 bg-[#f6fbf8]">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <a href="#top" className="flex items-center gap-3" aria-label="Apex Green home">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--ink-900)] text-white">
@@ -215,10 +318,10 @@ export default function App() {
         )}
       </header>
 
-      <main id="top">
-        <section className="relative">
+      <main id="top" className="snap-flow">
+        <section className="relative perf-section">
           <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 pb-16 pt-14 sm:px-6 md:pt-20 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-14 lg:px-8 lg:pb-20">
-            <div className="reveal-up">
+            <div>
               <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-600)]">
                 Premium Compliance and Sustainability Partner
               </p>
@@ -246,15 +349,14 @@ export default function App() {
               </div>
             </div>
 
-            <div className="glass-card reveal-up [animation-delay:120ms]">
+            <div className="glass-card">
               <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--ink-500)]">
-                Live Performance Snapshot
+                Core Competencies
               </p>
               <div className="grid grid-cols-2 gap-3">
-                {trustStats.map((item) => (
-                  <div key={item.label} className="rounded-xl border border-[var(--line)] bg-white/80 p-4">
-                    <p className="font-['Plus_Jakarta_Sans'] text-2xl font-extrabold text-[var(--ink-900)]">{item.value}</p>
-                    <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-[var(--ink-500)]">{item.label}</p>
+                {CORE_COMPETENCIES.map((item) => (
+                  <div key={item} className="rounded-xl border border-[var(--line)] bg-white/80 p-4">
+                    <p className="font-['Plus_Jakarta_Sans'] text-base font-extrabold text-[var(--ink-900)]">{item}</p>
                   </div>
                 ))}
               </div>
@@ -265,7 +367,23 @@ export default function App() {
           </div>
         </section>
 
-        <section id="services" className="border-y border-[var(--line)] bg-white py-16 sm:py-20">
+        <section id="expertise" className="perf-section border-y border-[var(--line)] bg-[#0f1f1a] py-10 sm:py-12">
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-300">Regulatory Expertise</p>
+            <div className="flex flex-wrap gap-2.5">
+              {REGULATORY_BADGES.map((badge) => (
+                <span
+                  key={badge}
+                  className="rounded-md border border-emerald-400/35 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-emerald-100"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="services" className="perf-section border-y border-[var(--line)] bg-white py-16 sm:py-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-10 flex items-end justify-between gap-6">
               <div>
@@ -274,13 +392,13 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid gap-5 md:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {SERVICES.map((item, index) => {
                 const Icon = item.icon;
                 return (
                   <article
                     key={item.title}
-                    className="group rounded-2xl border border-[var(--line)] bg-[var(--card-soft)] p-6 transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.08)]"
+                    className="group snap-card rounded-2xl border border-[var(--line)] bg-[var(--card-soft)] p-6 hover:border-emerald-300"
                     style={{ animationDelay: `${index * 80}ms` }}
                   >
                     <div className="mb-5 inline-flex rounded-xl bg-white p-3 text-[var(--brand-600)] shadow-sm">
@@ -288,6 +406,19 @@ export default function App() {
                     </div>
                     <h3 className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[var(--ink-900)]">{item.title}</h3>
                     <p className="mt-3 text-sm leading-relaxed text-[var(--ink-600)]">{item.description}</p>
+                    <ul className="mt-4 space-y-2">
+                      {item.items.map((serviceLine) => (
+                        <li key={serviceLine} className="flex items-center gap-2 text-sm text-[var(--ink-700)]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                          {serviceLine}
+                        </li>
+                      ))}
+                    </ul>
+                    {item.title === "Need Guidance?" && (
+                      <a href="#contact" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand-600)]">
+                        Discuss Your Project <ArrowRight size={14} />
+                      </a>
+                    )}
                   </article>
                 );
               })}
@@ -295,7 +426,28 @@ export default function App() {
           </div>
         </section>
 
-        <section id="why-us" className="bg-[var(--ink-900)] py-16 text-white sm:py-20">
+        <section id="sectors" className="perf-section border-y border-[var(--line)] bg-[var(--bg-canvas)] py-16 sm:py-20">
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-600)]">Sectors We Support</p>
+            </div>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {SECTORS.map((sector) => (
+                <article key={sector.title} className="sector-card snap-card overflow-hidden rounded-2xl border border-[var(--line)] bg-white">
+                  <div className="aspect-[16/10] overflow-hidden">
+                    <img src={sector.image} alt={sector.title} className="sector-media h-full w-full object-cover" loading="lazy" />
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-['Plus_Jakarta_Sans'] text-lg font-bold text-[var(--ink-900)]">{sector.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--ink-600)]">{sector.description}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="why-us" className="perf-section bg-[var(--ink-900)] py-16 text-white sm:py-20">
           <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-300">Why Teams Choose Us</p>
@@ -325,19 +477,21 @@ export default function App() {
           </div>
         </section>
 
-        <section id="process" className="bg-white py-16 sm:py-20">
+        <section id="process" className="perf-section bg-white py-16 sm:py-20">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-600)]">Project Workflow</p>
             <h2 className="mt-3 font-['Plus_Jakarta_Sans'] text-3xl font-extrabold tracking-tight sm:text-4xl">
-              A Process Built For Predictable Outcomes
+              How We Support Your Project
             </h2>
 
-            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {[
-                "1. Scope and objectives alignment",
-                "2. Technical strategy and data review",
-                "3. Report production and compliance pack",
-                "4. Submission support and clarifications",
+                "1. Initial Consultation",
+                "2. Project Scope Review",
+                "3. Technical Assessment",
+                "4. Report Preparation",
+                "5. Submission Support",
+                "6. Ongoing Compliance Advice",
               ].map((step) => (
                 <div key={step} className="rounded-xl border border-[var(--line)] bg-[var(--card-soft)] p-5 text-sm font-medium text-[var(--ink-700)]">
                   {step}
@@ -347,7 +501,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="contact" className="border-t border-[var(--line)] bg-[var(--bg-canvas)] py-16 sm:py-20">
+        <section id="contact" className="perf-section border-t border-[var(--line)] bg-[var(--bg-canvas)] py-16 sm:py-20">
           <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
             <aside>
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-600)]">Contact</p>
