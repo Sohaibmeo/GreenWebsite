@@ -1,0 +1,108 @@
+/* Premium, responsive UI refinements */
+:root {
+	--bg-canvas: #eef6f1;
+	--card-soft: #f8fcf9;
+	--ink-900: #0f1f1a;
+	--ink-800: #16302a;
+	--ink-700: #25433a;
+	--ink-600: #3f5c53;
+	--ink-500: #5e7b72;
+	--line: #d5e3db;
+	--brand-500: #16a34a;
+	--brand-600: #15803d;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+.site-shell {
+	position: relative;
+	isolation: isolate;
+}
+
+.ambient-layer {
+	pointer-events: none;
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background:
+		radial-gradient(circle at 15% 8%, rgba(22, 163, 74, 0.2), transparent 33%),
+		radial-gradient(circle at 85% 18%, rgba(15, 31, 26, 0.08), transparent 36%),
+		linear-gradient(180deg, #f6fbf8 0%, #eef6f1 100%);
+}
+
+.glass-card {
+	border: 1px solid rgba(255, 255, 255, 0.75);
+	background: rgba(255, 255, 255, 0.78);
+	border-radius: 1rem;
+	padding: 1.25rem;
+	box-shadow: 0 20px 45px rgba(17, 24, 39, 0.09);
+	backdrop-filter: blur(12px);
+}
+
+.field-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 0.45rem;
+}
+
+.field-wrap span {
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	color: var(--ink-600);
+	font-weight: 700;
+}
+
+.field-wrap input,
+.field-wrap select,
+.field-wrap textarea {
+	width: 100%;
+	border: 1px solid var(--line);
+	border-radius: 0.75rem;
+	padding: 0.72rem 0.9rem;
+	font-size: 0.9rem;
+	color: var(--ink-900);
+	background: #ffffff;
+	transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.field-wrap textarea {
+	resize: vertical;
+}
+
+.field-wrap input:focus,
+.field-wrap select:focus,
+.field-wrap textarea:focus {
+	outline: none;
+	border-color: rgba(22, 163, 74, 0.7);
+	box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.14);
+}
+
+.reveal-up {
+	opacity: 0;
+	transform: translateY(18px);
+	animation: reveal-up 650ms ease forwards;
+}
+
+@keyframes reveal-up {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal-up {
+		animation: none;
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (min-width: 1024px) {
+	.glass-card {
+		padding: 1.6rem;
+	}
+}
