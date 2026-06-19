@@ -525,7 +525,7 @@ export default function App() {
 
               <div className="mt-8 space-y-4 text-sm text-[var(--ink-700)]">
                 <p className="flex items-center gap-3">
-                  <Mail size={16} className="text-[var(--brand-600)]" /> sohaibmayo12@gmail.com
+                  <Mail size={16} className="text-[var(--brand-600)]" /> developmentsohaib@gmail.com
                 </p>
                 <p className="flex items-center gap-3">
                   <Phone size={16} className="text-[var(--brand-600)]" /> +44 7700 900 000
@@ -676,7 +676,7 @@ export default function App() {
                 <ul className="space-y-3 text-sm text-slate-400">
                   <li className="flex items-start gap-2.5">
                     <Mail size={14} className="mt-0.5 text-emerald-400" />
-                    <span>sohaibmayo12@gmail.com</span>
+                    <span>developmentsohaib@gmail.com</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Phone size={14} className="mt-0.5 text-emerald-400" />

@@ -1,7 +1,18 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import * as nodemailer from "nodemailer";
 
-const RESEND_API_URL = "https://api.resend.com/emails";
-const TO_EMAIL = "sohaibmayo12@gmail.com";
+type ApiRequest = {
+  method?: string;
+  body?: unknown;
+};
+
+type ApiResponse = {
+  status: (code: number) => ApiResponse;
+  setHeader: (name: string, value: string) => ApiResponse;
+  json: (payload: unknown) => ApiResponse;
+  send: (payload: string) => ApiResponse;
+};
+
+const TO_EMAIL = "developmentsohaib@gmail.com";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -13,7 +24,16 @@ function sanitize(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+export default async function handler(req: ApiRequest, res: ApiResponse) {
   if (req.method === "OPTIONS") {
     return res.status(204).setHeader("Access-Control-Allow-Origin", CORS_HEADERS["Access-Control-Allow-Origin"]).setHeader("Access-Control-Allow-Methods", CORS_HEADERS["Access-Control-Allow-Methods"]).setHeader("Access-Control-Allow-Headers", CORS_HEADERS["Access-Control-Allow-Headers"]).send("");
   }
@@ -22,12 +42,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).setHeader("Allow", "POST, OPTIONS").json({ error: "Method not allowed" });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.FROM_EMAIL || "Consultancy Website <onboarding@resend.dev>";
+  const smtpHost = process.env.SMTP_HOST;
+  const smtpPort = Number(process.env.SMTP_PORT || "587");
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+  const smtpSecure = (process.env.SMTP_SECURE || "false").toLowerCase() === "true";
+  const fromEmail = process.env.SMTP_FROM || smtpUser || TO_EMAIL;
 
-  if (!apiKey) {
+  if (!smtpHost || !smtpUser || !smtpPass) {
     return res.status(500).setHeader("Access-Control-Allow-Origin", CORS_HEADERS["Access-Control-Allow-Origin"]).json({
-      error: "Missing RESEND_API_KEY environment variable",
+      error: "Missing SMTP_HOST, SMTP_USER, or SMTP_PASS environment variables",
     });
   }
 
@@ -65,41 +89,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const html = `
     <h2>New project enquiry from GreenWebsite</h2>
-    <p><strong>Name:</strong> ${name}</p>
-    <p><strong>Email:</strong> ${email}</p>
-    <p><strong>Company:</strong> ${company || "N/A"}</p>
-    <p><strong>Phone:</strong> ${phone || "N/A"}</p>
-    <p><strong>Location:</strong> ${location || "N/A"}</p>
-    <p><strong>Service:</strong> ${service || "N/A"}</p>
-    <p><strong>Project Type:</strong> ${projectType || "N/A"}</p>
+    <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+    <p><strong>Company:</strong> ${escapeHtml(company || "N/A")}</p>
+    <p><strong>Phone:</strong> ${escapeHtml(phone || "N/A")}</p>
+    <p><strong>Location:</strong> ${escapeHtml(location || "N/A")}</p>
+    <p><strong>Service:</strong> ${escapeHtml(service || "N/A")}</p>
+    <p><strong>Project Type:</strong> ${escapeHtml(projectType || "N/A")}</p>
     <p><strong>Project details:</strong></p>
-    <p>${details.replace(/\n/g, "<br />")}</p>
+    <p>${escapeHtml(details).replace(/\n/g, "<br />")}</p>
   `;
 
   try {
-    const response = await fetch(RESEND_API_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpSecure,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
       },
-      body: JSON.stringify({
-        from: fromEmail,
-        to: [TO_EMAIL],
-        reply_to: email,
-        subject: `New enquiry: ${name}`,
-        text,
-        html,
-      }),
     });
 
-    if (!response.ok) {
-      const resendError = await response.text();
-      return res.status(502).setHeader("Access-Control-Allow-Origin", CORS_HEADERS["Access-Control-Allow-Origin"]).json({
-        error: "Failed to send email",
-        details: resendError,
-      });
-    }
+    await transporter.sendMail({
+      from: fromEmail,
+      to: TO_EMAIL,
+      replyTo: email,
+      subject: `New enquiry: ${name}`,
+      text,
+      html,
+    });
 
     return res.status(200).setHeader("Access-Control-Allow-Origin", CORS_HEADERS["Access-Control-Allow-Origin"]).json({
       success: true,
