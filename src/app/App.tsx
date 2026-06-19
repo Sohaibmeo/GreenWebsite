@@ -123,48 +123,56 @@ const SECTORS = [
   {
     title: "Residential Developments",
     description: "Homes, apartments, and mixed-tenure projects needing planning and regulatory confidence.",
+    compliance: "SAP · PART L · BREEAM · FIRE SAFETY",
     image:
       "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=640&h=420&fit=crop&auto=format",
   },
   {
     title: "Commercial Offices",
     description: "New and refurbished office schemes requiring sustainability and building compliance support.",
+    compliance: "SBEM · BREEAM · EPC · PART B",
     image:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=640&h=420&fit=crop&auto=format",
   },
   {
     title: "Industrial Facilities",
     description: "Warehouse and manufacturing developments with specialist environmental and fire considerations.",
+    compliance: "PART F · AIR QUALITY · FLOOD RISK",
     image:
       "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=640&h=420&fit=crop&auto=format",
   },
   {
     title: "Healthcare",
     description: "Clinical and care environments requiring robust technical and life safety compliance pathways.",
+    compliance: "HTM · FIRE ENGINEERING · TM52",
     image:
       "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=640&h=420&fit=crop&auto=format",
   },
   {
     title: "Education",
     description: "Schools and campus buildings with strong requirements around comfort, safety, and efficiency.",
+    compliance: "BB101 · BREEAM EDU · ACOUSTICS",
     image:
       "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=640&h=420&fit=crop&auto=format",
   },
   {
     title: "Hospitality",
     description: "Hotels and leisure spaces balancing guest comfort, energy use, and regulatory obligations.",
+    compliance: "FIRE SAFETY · ENERGY · BREEAM",
     image:
       "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=640&h=420&fit=crop&auto=format",
   },
   {
     title: "Retail & Mixed Use",
     description: "Retail-led and mixed-use schemes requiring integrated planning, compliance, and fire support.",
+    compliance: "FIRE STRATEGY · BREEAM · PART O",
     image:
       "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=640&h=420&fit=crop&auto=format",
   },
   {
     title: "Infrastructure",
     description: "Public and strategic infrastructure projects with multi-disciplinary technical requirements.",
+    compliance: "EIA · BNG · DRAINAGE · ECOLOGY",
     image:
       "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=640&h=420&fit=crop&auto=format",
   },
@@ -434,8 +442,10 @@ export default function App() {
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {SECTORS.map((sector) => (
                 <article key={sector.title} className="sector-card snap-card overflow-hidden rounded-2xl border border-[var(--line)] bg-white">
-                  <div className="aspect-[16/10] overflow-hidden">
+                  <div className="sector-image-wrap aspect-[16/10] overflow-hidden">
                     <img src={sector.image} alt={sector.title} className="sector-media h-full w-full object-cover" loading="lazy" />
+                    <div className="sector-image-overlay" aria-hidden="true" />
+                    <p className="sector-compliance">{sector.compliance}</p>
                   </div>
                   <div className="p-5">
                     <h3 className="font-['Plus_Jakarta_Sans'] text-lg font-bold text-[var(--ink-900)]">{sector.title}</h3>

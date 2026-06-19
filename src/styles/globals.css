@@ -65,14 +65,44 @@ html {
 }
 
 .sector-media {
-	filter: grayscale(100%) saturate(0.6) contrast(1.02);
+	filter: grayscale(100%) saturate(0) brightness(0.82) contrast(1.05);
 	transition: filter 220ms ease, transform 220ms ease;
 }
 
 .sector-card:hover .sector-media {
-	filter: grayscale(0%) saturate(1.05) contrast(1.02);
+	filter: grayscale(0%) saturate(1.05) brightness(1) contrast(1.02);
 	transform: scale(1.02);
 }
+
+.sector-image-wrap {
+	position: relative;
+}
+
+.sector-image-overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(7, 17, 14, 0.6) 0%, rgba(7, 17, 14, 0.08) 55%, rgba(7, 17, 14, 0) 100%);
+	transition: opacity 220ms ease;
+}
+
+.sector-card:hover .sector-image-overlay {
+	opacity: 0.72;
+}
+
+.sector-compliance {
+	position: absolute;
+	left: 0.8rem;
+	right: 0.8rem;
+	bottom: 0.65rem;
+	margin: 0;
+	font-size: 0.6rem;
+	font-family: "ui-monospace", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	line-height: 1.25;
+	color: rgba(74, 222, 128, 0.95);
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
 }
 
 .field-wrap {
