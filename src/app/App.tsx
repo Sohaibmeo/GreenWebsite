@@ -262,10 +262,10 @@ export default function App() {
   };
 
   return (
-    <div className="site-shell bg-[var(--bg-canvas)] text-[var(--ink-900)] min-h-screen overflow-x-hidden">
+    <div className="site-shell bg-[var(--bg-canvas)] text-[var(--ink-900)] min-h-screen">
       <div className="ambient-layer" aria-hidden="true" />
 
-      <header className="sticky top-0 z-50 border-b border-white/50 bg-[#f6fbf8]">
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/50 bg-[#f6fbf8]">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <a href="#top" className="flex items-center gap-3" aria-label="Apex Green home">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--ink-900)] text-white">
@@ -327,7 +327,7 @@ export default function App() {
         )}
       </header>
 
-      <main id="top" className="snap-flow">
+      <main id="top" className="snap-flow pt-18">
         <section className="relative perf-section">
           <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 pb-16 pt-14 sm:px-6 md:pt-20 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-14 lg:px-8 lg:pb-20">
             <div>
