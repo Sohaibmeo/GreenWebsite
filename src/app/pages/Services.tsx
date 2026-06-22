@@ -1,5 +1,13 @@
 import { FormEvent, useState } from "react";
-import { ArrowRight, Building2, ChartNoAxesCombined, CheckCircle2, Leaf, Mail, MapPin, Phone, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, Mail, MapPin, Phone, Sparkles } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./components/ui/accordion";
+
+type ServiceItem = {
+  name: string;
+  category: string;
+  description: string;
+  feeRange: string;
+};
 
 type EnquiryForm = {
   name: string;
@@ -12,68 +20,114 @@ type EnquiryForm = {
   details: string;
 };
 
-const SERVICES = [
+const SERVICES: ServiceItem[] = [
   {
-    title: "Energy & Sustainability",
-    description: "Performance-led modelling and compliance strategy for planning and building control.",
-    icon: ChartNoAxesCombined,
-    items: ["SAP Calculations", "SBEM Modelling", "EPC Certificates", "Part L Compliance"],
+    name: "SAP Calculations",
+    category: "Energy & Sustainability",
+    description: "Dwelling energy assessments and compliance outputs for planning and Part L submissions.",
+    feeRange: "From GBP 180",
   },
   {
-    title: "Environmental Consultancy",
-    description: "Technical assessments aligned to local authority and planning requirements.",
-    icon: Leaf,
-    items: [
-      "Flood Risk Assessments",
-      "BNG Assessments",
-      "Ecology Surveys",
-      "Air Quality Assessments",
-    ],
+    name: "SBEM Modelling",
+    category: "Energy & Sustainability",
+    description: "Non-domestic building energy modelling to demonstrate carbon and compliance performance.",
+    feeRange: "From GBP 450",
   },
   {
-    title: "Fire Engineering & Safety",
-    description: "Clear pathways for life safety design and fire-related regulatory approvals.",
-    icon: ShieldCheck,
-    items: [
-      "Fire Strategy Reports",
-      "Part B Compliance",
-      "Means of Escape Analysis",
-      "Smoke Ventilation Advice",
-    ],
+    name: "EPC Certificates",
+    category: "Energy & Sustainability",
+    description: "Energy Performance Certificates for sales, lettings, and compliance documentation.",
+    feeRange: "From GBP 120",
   },
   {
-    title: "Compliance & Building Regulations",
-    description: "Targeted compliance support to reduce approval risk and keep submissions technically robust.",
-    icon: CheckCircle2,
-    items: [
-      "Planning Compliance",
-      "Part B, E, F and O Support",
-      "Building Regulations Strategy",
-      "Technical Submission Reviews",
-    ],
+    name: "Part L Compliance",
+    category: "Energy & Sustainability",
+    description: "Regulatory calculations and reports to satisfy Approved Document L obligations.",
+    feeRange: "From GBP 280",
   },
   {
-    title: "Testing & Certification",
-    description: "Verification services and certification outputs that support sign-off confidence.",
-    icon: Building2,
-    items: [
-      "Airtightness Testing",
-      "Sound Testing",
-      "TM44 Inspections",
-      "Compliance Certification",
-    ],
+    name: "BREEAM Assessments",
+    category: "Energy & Sustainability",
+    description: "Assessor-led strategy and evidence coordination to achieve targeted BREEAM ratings.",
+    feeRange: "From GBP 1,250",
   },
   {
-    title: "Need Guidance?",
-    description:
-      "Not every development requires the same assessments or compliance pathway. Our consultants can review your project and identify the reports and approvals required.",
-    icon: Sparkles,
-    items: [
-      "Early Project Triage",
-      "Assessment Roadmap",
-      "Approval Strategy",
-      "Single Point Advice",
-    ],
+    name: "Air Quality Assessments",
+    category: "Environmental Consultancy",
+    description: "Technical assessment and mitigation advice aligned to local planning policy.",
+    feeRange: "From GBP 950",
+  },
+  {
+    name: "Noise Impact Assessments",
+    category: "Environmental Consultancy",
+    description: "Site-specific acoustic studies for planning submissions and design decisions.",
+    feeRange: "From GBP 850",
+  },
+  {
+    name: "Flood Risk Assessments",
+    category: "Environmental Consultancy",
+    description: "Flood risk analysis with drainage and mitigation recommendations for planning.",
+    feeRange: "From GBP 950",
+  },
+  {
+    name: "Biodiversity Net Gain (BNG)",
+    category: "Environmental Consultancy",
+    description: "Baseline habitat and uplift strategy to support BNG obligations and approvals.",
+    feeRange: "From GBP 1,450",
+  },
+  {
+    name: "Ecology Surveys",
+    category: "Environmental Consultancy",
+    description: "Ecological appraisal and protected species surveys for planning-stage due diligence.",
+    feeRange: "From GBP 790",
+  },
+  {
+    name: "Fire Risk Assessments",
+    category: "Fire & Building Safety",
+    description: "Risk-led fire safety review for occupied buildings and dutyholder compliance.",
+    feeRange: "From GBP 350",
+  },
+  {
+    name: "Fire Strategy Reports",
+    category: "Fire & Building Safety",
+    description: "Comprehensive fire design strategy for planning, building control, and sign-off.",
+    feeRange: "From GBP 1,250",
+  },
+  {
+    name: "Part B Compliance Support",
+    category: "Fire & Building Safety",
+    description: "Targeted technical support to address fire safety provisions under Approved Document B.",
+    feeRange: "From GBP 650",
+  },
+  {
+    name: "Building Regulations Consultancy",
+    category: "Compliance & Regulations",
+    description: "Multi-discipline building regulations guidance across design and pre-construction stages.",
+    feeRange: "From GBP 550",
+  },
+  {
+    name: "Airtightness Testing",
+    category: "Testing & Certification",
+    description: "On-site air permeability testing with certificates accepted for compliance submission.",
+    feeRange: "From GBP 220",
+  },
+  {
+    name: "Sound Testing",
+    category: "Testing & Certification",
+    description: "Pre-completion acoustic testing for separating elements and compliance reports.",
+    feeRange: "From GBP 300",
+  },
+  {
+    name: "Asbestos Surveys",
+    category: "Testing & Certification",
+    description: "Management and refurbishment surveys with actionable risk findings.",
+    feeRange: "From GBP 240",
+  },
+  {
+    name: "TM44 Inspections",
+    category: "Testing & Certification",
+    description: "Air conditioning energy inspections with TM44 certification reports.",
+    feeRange: "From GBP 180",
   },
 ];
 
@@ -87,15 +141,7 @@ const PROJECT_TYPES = [
   "Other",
 ];
 
-const SERVICE_OPTIONS = [
-  "Energy & Sustainability",
-  "Environmental Consultancy",
-  "Fire Engineering & Safety",
-  "Compliance & Building Regulations",
-  "Testing & Certification",
-  "Need Guidance",
-  "Multiple Services",
-];
+const SERVICE_OPTIONS = SERVICES.map((s) => s.name);
 
 const INITIAL_FORM: EnquiryForm = {
   name: "",
@@ -119,6 +165,15 @@ export function Services() {
   ) => {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const requestExactPrice = (serviceName: string) => {
+    setForm((prev) => ({
+      ...prev,
+      service: serviceName,
+      details: prev.details || `I would like an exact quote for ${serviceName}.`,
+    }));
+    document.getElementById("service-enquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const submitEnquiry = async (event: FormEvent<HTMLFormElement>) => {
@@ -165,39 +220,50 @@ export function Services() {
           <div className="mb-10">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-600)]">Our Service Portfolio</p>
             <h1 className="mt-3 font-['Plus_Jakarta_Sans'] text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Everything Needed To De-Risk Delivery
+              Complete Service List With Pricing
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--ink-600)]">
-              Comprehensive technical consultancy services spanning energy performance, environmental assessments, fire safety, compliance strategy, and specialist testing. All delivered with precision and clarity.
+              All services with typical fee ranges based on project scope and complexity. Click "Get Exact Price" below any service to receive a personalized quote.
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <article
-                  key={item.title}
-                  className="group snap-card rounded-2xl border border-[var(--line)] bg-[var(--card-soft)] p-6 hover:border-emerald-300"
-                  style={{ animationDelay: `${index * 80}ms` }}
-                >
-                  <div className="mb-5 inline-flex rounded-xl bg-white p-3 text-[var(--brand-600)] shadow-sm">
-                    <Icon size={20} />
-                  </div>
-                  <h3 className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[var(--ink-900)]">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--ink-600)]">{item.description}</p>
-                  <ul className="mt-4 space-y-2">
-                    {item.items.map((serviceLine) => (
-                      <li key={serviceLine} className="flex items-center gap-2 text-sm text-[var(--ink-700)]">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                        {serviceLine}
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              );
-            })}
+          <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            Typical fee ranges are indicative and depend on project size, complexity, location, and programme.
           </div>
+
+          <Accordion type="single" collapsible className="space-y-3">
+            {SERVICES.map((service) => (
+              <AccordionItem
+                key={service.name}
+                value={service.name}
+                className="rounded-2xl border border-[var(--line)] bg-[var(--card-soft)] px-5"
+              >
+                <AccordionTrigger className="hover:no-underline">
+                  <div className="flex w-full flex-col items-start gap-2 pr-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="font-['Plus_Jakarta_Sans'] text-lg font-bold text-[var(--ink-900)]">{service.name}</p>
+                      <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--ink-500)]">
+                        {service.category}
+                      </p>
+                    </div>
+                    <span className="rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
+                      {service.feeRange}
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm leading-relaxed text-[var(--ink-600)]">{service.description}</p>
+                  <button
+                    onClick={() => requestExactPrice(service.name)}
+                    className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[var(--ink-900)] bg-white px-4 py-2 text-sm font-semibold text-[var(--ink-900)] transition hover:bg-[var(--ink-900)] hover:text-white"
+                  >
+                    Get Exact Price
+                    <ArrowRight size={14} />
+                  </button>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 
