@@ -202,7 +202,7 @@ export function Home() {
               return (
                 <article
                   key={item.title}
-                  className="group snap-card rounded-2xl border border-[var(--line)] bg-[var(--card-soft)] p-6 hover:border-emerald-300"
+                  className="group snap-card flex flex-col rounded-2xl border border-[var(--line)] bg-[var(--card-soft)] p-6 hover:border-emerald-300"
                   style={{ animationDelay: `${index * 80}ms` }}
                 >
                   <div className="mb-5 inline-flex rounded-xl bg-white p-3 text-[var(--brand-600)] shadow-sm">
@@ -210,7 +210,7 @@ export function Home() {
                   </div>
                   <h3 className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[var(--ink-900)]">{item.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-[var(--ink-600)]">{item.description}</p>
-                  <ul className="mt-4 space-y-2">
+                  <ul className="mt-4 flex-1 space-y-2">
                     {item.items.map((serviceLine) => (
                       <li key={serviceLine} className="flex items-center gap-2 text-sm text-[var(--ink-700)]">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
