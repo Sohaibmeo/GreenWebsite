@@ -1,6 +1,6 @@
 import { ChevronRight, Menu, Sparkles, X } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 const SERVICE_NAV = [
   {
@@ -94,11 +94,40 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState(SERVICE_NAV[0].id);
+  const location = useLocation();
+  const navigate = useNavigate();
   const activeCategory = SERVICE_NAV.find((item) => item.id === activeCategoryId) || SERVICE_NAV[0];
   const toServiceSearchHref = (serviceLabel: string) =>
     `/services?search=${encodeURIComponent(serviceLabel)}`;
   const desktopNavItemClass =
     "inline-flex h-10 items-center text-sm font-semibold leading-none text-[var(--ink-600)] transition hover:text-[var(--ink-900)]";
+
+  const scrollToSection = (sectionId: string) => {
+    const target = document.getElementById(sectionId);
+    if (!target) {
+      return false;
+    }
+
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    return true;
+  };
+
+  const goToSection = (sectionId: string) => {
+    setMenuOpen(false);
+
+    if (location.pathname === "/") {
+      const scrolled = scrollToSection(sectionId);
+      if (!scrolled) {
+        navigate(`/#${sectionId}`);
+      }
+      return;
+    }
+
+    navigate(`/#${sectionId}`);
+    setTimeout(() => {
+      scrollToSection(sectionId);
+    }, 80);
+  };
 
   return (
     <div className="site-shell bg-[var(--bg-canvas)] text-[var(--ink-900)] min-h-screen">
@@ -179,15 +208,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
               )}
             </div>
 
-            <Link to="/#sectors" className={desktopNavItemClass}>
+            <button type="button" className={desktopNavItemClass} onClick={() => goToSection("sectors")}>
               Sectors
-            </Link>
-            <Link to="/#why-us" className={desktopNavItemClass}>
+            </button>
+            <button type="button" className={desktopNavItemClass} onClick={() => goToSection("why-us")}>
               Why Us
-            </Link>
-            <Link to="/#contact" className={desktopNavItemClass}>
+            </button>
+            <button type="button" className={desktopNavItemClass} onClick={() => goToSection("contact")}>
               Contact Us
-            </Link>
+            </button>
           </nav>
 
           <Link
@@ -213,15 +242,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Link to="/" className="text-sm font-semibold text-[var(--ink-700)]" onClick={() => setMenuOpen(false)}>
                 Home
               </Link>
-              <Link to="/#sectors" className="text-sm font-semibold text-[var(--ink-700)]" onClick={() => setMenuOpen(false)}>
+              <button
+                type="button"
+                className="text-left text-sm font-semibold text-[var(--ink-700)]"
+                onClick={() => goToSection("sectors")}
+              >
                 Sectors
-              </Link>
-              <Link to="/#why-us" className="text-sm font-semibold text-[var(--ink-700)]" onClick={() => setMenuOpen(false)}>
+              </button>
+              <button
+                type="button"
+                className="text-left text-sm font-semibold text-[var(--ink-700)]"
+                onClick={() => goToSection("why-us")}
+              >
                 Why Us
-              </Link>
-              <Link to="/#contact" className="text-sm font-semibold text-[var(--ink-700)]" onClick={() => setMenuOpen(false)}>
+              </button>
+              <button
+                type="button"
+                className="text-left text-sm font-semibold text-[var(--ink-700)]"
+                onClick={() => goToSection("contact")}
+              >
                 Contact Us
-              </Link>
+              </button>
 
               {SERVICE_NAV.map((category) => (
                 <details key={category.id} className="rounded-lg border border-[var(--line)] bg-white p-2">
