@@ -23,67 +23,79 @@ type EnquiryForm = {
 const SERVICES: ServiceItem[] = [
   {
     name: "SAP Calculations",
-    category: "Energy & Sustainability",
+    category: "Energy & Sustainability Services",
     description: "Dwelling energy assessments and compliance outputs for planning and Part L submissions.",
     feeRange: "GBP 150 - 350",
   },
   {
-    name: "EPC Certificate",
-    category: "Energy & Sustainability",
+    name: "EPC Certificates",
+    category: "Energy & Sustainability Services",
     description: "Energy Performance Certificate for domestic properties and compliance documentation.",
     feeRange: "GBP 60 - 150",
   },
   {
     name: "Part L Compliance Package",
-    category: "Energy & Sustainability",
+    category: "Energy & Sustainability Services",
     description: "Combined modelling, documentation, and compliance package for Part L submissions.",
     feeRange: "GBP 500 - 2,000",
   },
   {
-    name: "TM59 Overheating Assessment",
-    category: "Energy & Sustainability",
-    description: "Overheating risk assessment for residential schemes using dynamic simulation where required.",
+    name: "Overheating Assessments (TM52/TM59)",
+    category: "Energy & Sustainability Services",
+    description: "Overheating risk assessment using TM52 and TM59 methodologies, including dynamic simulation where required.",
     feeRange: "GBP 750 - 2,500",
   },
   {
     name: "U-Value Calculations",
-    category: "Energy & Sustainability",
+    category: "Energy & Sustainability Services",
     description: "Element-level thermal transmittance calculations for fabric compliance checks.",
     feeRange: "GBP 50 - 250",
   },
   {
     name: "SBEM Calculations",
-    category: "Energy & Sustainability",
+    category: "Energy & Sustainability Services",
     description: "Commercial building energy model for Part L2 non-domestic compliance.",
     feeRange: "GBP 750 - 5,000+",
   },
   {
     name: "BRUKL Reports",
-    category: "Energy & Sustainability",
+    category: "Energy & Sustainability Services",
     description: "BRUKL outputs and compliance reports for commercial energy assessments.",
     feeRange: "GBP 500 - 3,500+",
   },
   {
     name: "Thermal Modelling",
-    category: "Energy & Sustainability",
+    category: "Energy & Sustainability Services",
     description: "Dynamic thermal simulation modelling for comfort, overheating, and energy optimization.",
     feeRange: "GBP 3,000 - 25,000+",
   },
   {
-    name: "BREEAM Assessment",
-    category: "Energy & Sustainability",
+    name: "BREEAM Assessments",
+    category: "Energy & Sustainability Services",
     description: "Assessor-led strategy, credits management, and evidence coordination.",
     feeRange: "GBP 5,000 - 50,000+",
   },
   {
     name: "Net Zero Carbon Consultancy",
-    category: "Energy & Sustainability",
+    category: "Energy & Sustainability Services",
     description: "Net zero pathway planning including fabric, systems, renewables, and offset strategy.",
     feeRange: "GBP 10,000 - 100,000+",
   },
   {
-    name: "Sustainability Statement",
-    category: "Energy & Sustainability",
+    name: "Renewable Energy Assessments",
+    category: "Energy & Sustainability Services",
+    description: "Renewables feasibility and system integration assessment for planning and operational performance.",
+    feeRange: "GBP 1,500 - 20,000+",
+  },
+  {
+    name: "Energy Statements",
+    category: "Energy & Sustainability Services",
+    description: "Policy-aligned energy statements for planning submissions and local authority requirements.",
+    feeRange: "GBP 1,000 - 8,000+",
+  },
+  {
+    name: "Sustainability Statements",
+    category: "Energy & Sustainability Services",
     description: "Planning-stage sustainability narrative aligned to local policy and development targets.",
     feeRange: "GBP 2,000 - 15,000+",
   },
@@ -323,6 +335,21 @@ const PROJECT_TYPES = [
 
 const SERVICE_OPTIONS = SERVICES.map((s) => s.name);
 
+const CATEGORY_ANCHORS: Record<string, string> = {
+  "Energy & Sustainability Services": "energy-sustainability",
+  "Environmental Consultancy": "environmental-consultancy",
+  "Fire & Building Safety": "fire-building-safety",
+  "Compliance & Regulations": "compliance-building-regulations",
+  "Testing & Certification": "testing-certification",
+};
+
+const toAnchor = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
 const INITIAL_FORM: EnquiryForm = {
   name: "",
   company: "",
@@ -437,39 +464,54 @@ export function Services() {
           </div>
 
           <Accordion type="single" collapsible className="space-y-3">
-            {filteredServices.map((service) => (
-              <AccordionItem
-                key={service.name}
-                value={service.name}
-                className="rounded-2xl border border-[var(--line)] bg-[var(--card-soft)] px-5"
-              >
-                <AccordionTrigger className="hover:no-underline">
-                  <div className="flex w-full flex-col items-start gap-2 pr-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <p className="font-['Plus_Jakarta_Sans'] text-lg font-bold text-[var(--ink-900)]">{service.name}</p>
-                      <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--ink-500)]">
+            {filteredServices.map((service, index) => {
+              const isFirstInCategory =
+                filteredServices.findIndex((item) => item.category === service.category) === index;
+
+              return (
+                <div key={service.name}>
+                  {isFirstInCategory && (
+                    <div id={CATEGORY_ANCHORS[service.category]} className="scroll-mt-24 pb-2 pt-1">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--brand-600)]">
                         {service.category}
                       </p>
                     </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="pt-2">
-                  <div className="mb-3">
-                    <span className="rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
-                      {service.feeRange}
-                    </span>
-                  </div>
-                  <p className="text-sm leading-relaxed text-[var(--ink-600)]">{service.description}</p>
-                  <button
-                    onClick={() => requestExactPrice(service.name)}
-                    className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[var(--ink-900)] bg-white px-4 py-2 text-sm font-semibold text-[var(--ink-900)] transition hover:bg-[var(--ink-900)] hover:text-white"
+                  )}
+
+                  <AccordionItem
+                    id={toAnchor(service.name)}
+                    value={service.name}
+                    className="scroll-mt-24 rounded-2xl border border-[var(--line)] bg-[var(--card-soft)] px-5"
                   >
-                    Get Exact Price
-                    <ArrowRight size={14} />
-                  </button>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+                    <AccordionTrigger className="hover:no-underline">
+                      <div className="flex w-full flex-col items-start gap-2 pr-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                          <p className="font-['Plus_Jakarta_Sans'] text-lg font-bold text-[var(--ink-900)]">{service.name}</p>
+                          <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--ink-500)]">
+                            {service.category}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="pt-2">
+                      <div className="mb-3">
+                        <span className="rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
+                          {service.feeRange}
+                        </span>
+                      </div>
+                      <p className="text-sm leading-relaxed text-[var(--ink-600)]">{service.description}</p>
+                      <button
+                        onClick={() => requestExactPrice(service.name)}
+                        className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[var(--ink-900)] bg-white px-4 py-2 text-sm font-semibold text-[var(--ink-900)] transition hover:bg-[var(--ink-900)] hover:text-white"
+                      >
+                        Get Exact Price
+                        <ArrowRight size={14} />
+                      </button>
+                    </AccordionContent>
+                  </AccordionItem>
+                </div>
+              );
+            })}
           </Accordion>
 
           {filteredServices.length === 0 && (
