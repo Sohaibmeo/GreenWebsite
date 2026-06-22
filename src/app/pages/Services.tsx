@@ -1,5 +1,6 @@
-import { FormEvent, useState } from "react";
-import { ArrowRight, Mail, MapPin, Phone, Sparkles } from "lucide-react";
+import { FormEvent, useEffect, useState } from "react";
+import { ArrowRight, Mail, MapPin, Phone, Sparkles, X } from "lucide-react";
+import { useLocation } from "react-router";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 
 type ServiceItem = {
@@ -367,6 +368,13 @@ export function Services() {
   const [formMessage, setFormMessage] = useState("");
   const [formError, setFormError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const searchFromNav = params.get("search") || "";
+    setSearchQuery(searchFromNav);
+  }, [location.search]);
 
   const filteredServices = SERVICES.filter((service) => {
     const query = searchQuery.trim().toLowerCase();
@@ -455,11 +463,24 @@ export function Services() {
           <div className="mb-6">
             <label className="field-wrap">
               <span>Search Services</span>
-              <input
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Type a service, category, or keyword"
-              />
+              <div className="relative">
+                <input
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Type a service, category, or keyword"
+                  className="pr-10"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-[var(--ink-500)] transition hover:bg-[var(--card-soft)] hover:text-[var(--ink-900)]"
+                    aria-label="Clear search"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
             </label>
           </div>
 

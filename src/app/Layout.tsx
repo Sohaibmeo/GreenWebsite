@@ -95,6 +95,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState(SERVICE_NAV[0].id);
   const activeCategory = SERVICE_NAV.find((item) => item.id === activeCategoryId) || SERVICE_NAV[0];
+  const toServiceSearchHref = (serviceLabel: string) =>
+    `/services?search=${encodeURIComponent(serviceLabel)}`;
+  const desktopNavItemClass =
+    "inline-flex h-10 items-center text-sm font-semibold leading-none text-[var(--ink-600)] transition hover:text-[var(--ink-900)]";
 
   return (
     <div className="site-shell bg-[var(--bg-canvas)] text-[var(--ink-900)] min-h-screen">
@@ -113,7 +117,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
-            <Link to="/" className="text-sm font-semibold text-[var(--ink-600)] transition hover:text-[var(--ink-900)]">
+            <Link to="/" className={desktopNavItemClass}>
               Home
             </Link>
 
@@ -127,15 +131,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
             >
               <button
                 type="button"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--ink-600)] transition hover:text-[var(--ink-900)]"
+                className={`${desktopNavItemClass} gap-2`}
               >
                 Services
                 <ChevronRight size={14} className={`transition ${servicesMenuOpen ? "rotate-90" : ""}`} />
               </button>
 
+              {servicesMenuOpen && <div className="absolute left-0 top-full h-3 w-full" aria-hidden="true" />}
+
               {servicesMenuOpen && (
-                <div className="absolute left-0 top-full z-50 mt-3 grid w-[760px] grid-cols-[320px_1fr] gap-0 overflow-hidden rounded-2xl border border-[var(--line)] bg-white shadow-[0_18px_45px_rgba(10,30,20,0.18)]">
-                  <div className="border-r border-[var(--line)] bg-[var(--card-soft)] p-3">
+                <div className="absolute left-0 top-full z-50 mt-0 grid w-[760px] grid-cols-[320px_1fr] gap-0 overflow-hidden rounded-2xl border border-[var(--line)] bg-white shadow-[0_18px_45px_rgba(10,30,20,0.18)]">
+                  <div className="max-h-[70vh] overflow-y-auto border-r border-[var(--line)] bg-[var(--card-soft)] p-3">
                     {SERVICE_NAV.map((category) => (
                       <Link
                         key={category.id}
@@ -153,15 +159,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     ))}
                   </div>
 
-                  <div className="p-4">
+                  <div className="max-h-[70vh] overflow-y-auto p-4">
                     <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--ink-500)]">
                       {activeCategory.label}
                     </p>
                     <div className="grid gap-1">
                       {activeCategory.services.map((service) => (
                         <Link
-                          key={service.href}
-                          to={service.href}
+                          key={service.label}
+                          to={toServiceSearchHref(service.label)}
                           className="rounded-md px-2 py-1.5 text-sm text-[var(--ink-700)] transition hover:bg-[var(--card-soft)] hover:text-[var(--ink-900)]"
                         >
                           {service.label}
@@ -172,6 +178,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               )}
             </div>
+
+            <Link to="/#sectors" className={desktopNavItemClass}>
+              Sectors
+            </Link>
+            <Link to="/#why-us" className={desktopNavItemClass}>
+              Why Us
+            </Link>
+            <Link to="/#contact" className={desktopNavItemClass}>
+              Contact Us
+            </Link>
           </nav>
 
           <Link
@@ -197,6 +213,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Link to="/" className="text-sm font-semibold text-[var(--ink-700)]" onClick={() => setMenuOpen(false)}>
                 Home
               </Link>
+              <Link to="/#sectors" className="text-sm font-semibold text-[var(--ink-700)]" onClick={() => setMenuOpen(false)}>
+                Sectors
+              </Link>
+              <Link to="/#why-us" className="text-sm font-semibold text-[var(--ink-700)]" onClick={() => setMenuOpen(false)}>
+                Why Us
+              </Link>
+              <Link to="/#contact" className="text-sm font-semibold text-[var(--ink-700)]" onClick={() => setMenuOpen(false)}>
+                Contact Us
+              </Link>
 
               {SERVICE_NAV.map((category) => (
                 <details key={category.id} className="rounded-lg border border-[var(--line)] bg-white p-2">
@@ -208,8 +233,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <div className="mt-2 flex flex-col gap-2 border-t border-[var(--line)] pt-2">
                     {category.services.map((service) => (
                       <Link
-                        key={service.href}
-                        to={service.href}
+                        key={service.label}
+                        to={toServiceSearchHref(service.label)}
                         className="text-xs font-medium text-[var(--ink-600)]"
                         onClick={() => setMenuOpen(false)}
                       >
