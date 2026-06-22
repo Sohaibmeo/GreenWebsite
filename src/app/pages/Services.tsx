@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { ArrowRight, Mail, MapPin, Phone, Sparkles } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 
 type ServiceItem = {
   name: string;

@@ -1,6 +1,6 @@
 import { ArrowRight, CheckCircle2, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 
 type ServiceItem = {
   name: string;
