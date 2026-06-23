@@ -556,10 +556,10 @@ export function Services() {
 
             <div className="mt-8 space-y-4 text-sm text-[var(--ink-700)]">
               <p className="flex items-center gap-3">
-                <Mail size={16} className="text-[var(--brand-600)]" /> developmentsohaib@gmail.com
+                <Mail size={16} className="text-[var(--brand-600)]" /> ops@excoms.com
               </p>
               <p className="flex items-center gap-3">
-                <Phone size={16} className="text-[var(--brand-600)]" /> +44 7700 900 000
+                <Phone size={16} className="text-[var(--brand-600)]" /> +44 7519 666004
               </p>
               <p className="flex items-center gap-3">
                 <MapPin size={16} className="text-[var(--brand-600)]" /> United Kingdom - Nationwide
@@ -700,11 +700,11 @@ export function Services() {
               <ul className="space-y-3 text-sm text-slate-400">
                 <li className="flex items-start gap-2.5">
                   <Mail size={14} className="mt-0.5 text-emerald-400" />
-                  <span>developmentsohaib@gmail.com</span>
+                  <span>ops@excoms.com</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Phone size={14} className="mt-0.5 text-emerald-400" />
-                  <span>+44 7700 900 000</span>
+                  <span>+44 7519 666004</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <MapPin size={14} className="mt-0.5 text-emerald-400" />
