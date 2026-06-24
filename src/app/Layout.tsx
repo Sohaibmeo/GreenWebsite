@@ -136,7 +136,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/50 bg-[var(--bg-header)]">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-3" aria-label="Apex Consultancy home">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#064e3b] text-white">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--brand-dark)] text-white">
               <Sparkles size={16} />
             </span>
             <div>
@@ -220,7 +220,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <Link
             to="/services"
-            className="hidden rounded-xl bg-[var(--brand-500)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(22,163,74,0.35)] transition hover:translate-y-[-1px] hover:bg-[var(--brand-600)] md:inline-flex"
+            className="hidden rounded-xl bg-[var(--brand-500)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(22,163,74,0.35)] transition hover:translate-y-[-1px] hover:bg-[var(--brand-dark)] md:inline-flex"
           >
             View Services
           </Link>
@@ -287,7 +287,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
               <Link
                 to="/services"
-                className="mt-2 inline-flex w-fit rounded-lg bg-[var(--brand-500)] px-4 py-2 text-sm font-semibold text-white"
+                className="mt-2 inline-flex w-fit rounded-lg bg-[var(--brand-500)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[var(--brand-dark)]"
                 onClick={() => setMenuOpen(false)}
               >
                 View Services

@@ -242,14 +242,14 @@ export function Home() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--ink-900)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-black"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--ink-900)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--brand-dark)]"
               >
                 Check Full List of Services <ArrowRight size={15} />
               </Link>
               <button
                 type="button"
                 onClick={focusContactForm}
-                className="inline-flex items-center justify-center rounded-xl border border-[var(--line)] bg-white px-6 py-3.5 text-sm font-semibold text-[var(--ink-800)] transition hover:border-[var(--brand-500)]"
+                className="inline-flex items-center justify-center rounded-xl border border-[var(--line)] bg-white px-6 py-3.5 text-sm font-semibold text-[var(--ink-800)] transition hover:border-[var(--brand-dark)]"
               >
                 Contact Us
               </button>
@@ -332,14 +332,14 @@ export function Home() {
                     <button
                       type="button"
                       onClick={() => selectService(item.title, item.title)}
-                      className="inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--ink-900)] bg-white px-4 py-2 text-sm font-semibold text-[var(--ink-900)] transition hover:bg-[var(--ink-900)] hover:text-white"
+                      className="inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--ink-900)] bg-white px-4 py-2 text-sm font-semibold text-[var(--ink-900)] transition hover:border-[var(--brand-dark)] hover:bg-[var(--brand-dark)] hover:text-white"
                     >
                       Discuss Your Project
                     </button>
                     {isLast && (
                       <Link
                         to="/services"
-                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--brand-500)] px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(22,163,74,0.35)] transition hover:translate-y-[-1px] hover:bg-[var(--brand-600)] hover:text-white"
+                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--brand-500)] px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(22,163,74,0.35)] transition hover:translate-y-[-1px] hover:bg-[var(--brand-dark)] hover:text-white"
                       >
                         View Full List
                         <ArrowRight size={14} />
@@ -372,7 +372,7 @@ export function Home() {
                   <button
                     type="button"
                     onClick={() => selectSector(sector.title)}
-                    className="mt-auto inline-flex h-9 items-center gap-2 self-start rounded-lg border border-[var(--ink-900)] bg-white px-3 text-xs font-semibold text-[var(--ink-900)] transition hover:bg-[var(--ink-900)] hover:text-white"
+                    className="mt-auto inline-flex h-9 items-center gap-2 self-start rounded-lg border border-[var(--ink-900)] bg-white px-3 text-xs font-semibold text-[var(--ink-900)] transition hover:border-[var(--brand-dark)] hover:bg-[var(--brand-dark)] hover:text-white"
                   >
                     Select This Sector
                     <ArrowRight size={12} />
@@ -525,7 +525,7 @@ export function Home() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--ink-900)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--ink-900)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--brand-dark)] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? "Sending..." : "Send Enquiry"}
               {!isSubmitting && <ArrowRight size={15} />}

@@ -523,7 +523,7 @@ export function Services() {
                       <p className="text-sm leading-relaxed text-[var(--ink-600)]">{service.description}</p>
                       <button
                         onClick={() => requestExactPrice(service.name)}
-                        className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[var(--ink-900)] bg-white px-4 py-2 text-sm font-semibold text-[var(--ink-900)] transition hover:bg-[var(--ink-900)] hover:text-white"
+                        className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[var(--ink-900)] bg-white px-4 py-2 text-sm font-semibold text-[var(--ink-900)] transition hover:border-[var(--brand-dark)] hover:bg-[var(--brand-dark)] hover:text-white"
                       >
                         Get Exact Price
                         <ArrowRight size={14} />
@@ -630,7 +630,7 @@ export function Services() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--ink-900)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--ink-900)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--brand-dark)] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? "Sending..." : "Send Enquiry"}
               {!isSubmitting && <ArrowRight size={15} />}
