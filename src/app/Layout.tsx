@@ -133,15 +133,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <div className="site-shell bg-[var(--bg-canvas)] text-[var(--ink-900)] min-h-screen">
       <div className="ambient-layer" aria-hidden="true" />
 
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/50 bg-[#f6fbf8]">
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/50 bg-[var(--bg-header)]">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <Link to="/" className="flex items-center gap-3" aria-label="Apex Green home">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--ink-900)] text-white">
+          <Link to="/" className="flex items-center gap-3" aria-label="Apex Consultancy home">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#064e3b] text-white">
               <Sparkles size={16} />
             </span>
             <div>
-              <p className="font-['Plus_Jakarta_Sans'] text-base font-extrabold tracking-tight">Apex Green</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--ink-500)]">Consultancy</p>
+              <p className="font-['Plus_Jakarta_Sans'] text-base font-extrabold tracking-tight">Apex Consultancy</p>
             </div>
           </Link>
 
@@ -237,7 +236,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         {menuOpen && (
-          <div className="border-t border-white/50 bg-[#f6fbf8] px-4 py-4 md:hidden">
+          <div className="border-t border-white/50 bg-[var(--bg-header)] px-4 py-4 md:hidden">
             <div className="mx-auto flex max-w-7xl flex-col gap-3">
               <Link to="/" className="text-sm font-semibold text-[var(--ink-700)]" onClick={() => setMenuOpen(false)}>
                 Home

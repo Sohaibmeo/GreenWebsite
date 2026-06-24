@@ -647,7 +647,7 @@ export function Services() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-md border border-emerald-500/40 bg-[#0c1d17] text-emerald-400">
                   <Sparkles size={14} />
                 </span>
-                <p className="font-['Plus_Jakarta_Sans'] text-lg font-extrabold text-white">APEX</p>
+                <p className="font-['Plus_Jakarta_Sans'] text-lg font-extrabold text-white">Apex Consultancy</p>
               </div>
               <p className="max-w-xs text-sm leading-relaxed text-slate-400">
                 UK-based specialist consultancy providing environmental, sustainability, fire safety,

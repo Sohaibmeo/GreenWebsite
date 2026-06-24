@@ -1,13 +1,14 @@
 /* Premium, responsive UI refinements */
 :root {
-	--bg-canvas: #eef6f1;
-	--card-soft: #f8fcf9;
+	--bg-canvas: #cfe9d9;
+	--bg-header: #e5f5eb;
+	--card-soft: #edf8f1;
 	--ink-900: #0f1f1a;
 	--ink-800: #16302a;
 	--ink-700: #25433a;
 	--ink-600: #3f5c53;
 	--ink-500: #5e7b72;
-	--line: #d5e3db;
+	--line: #b7d4c3;
 	--brand-500: #16a34a;
 	--brand-600: #15803d;
 }
@@ -32,9 +33,9 @@ html {
 	z-index: -1;
 	will-change: auto;
 	background:
-		radial-gradient(circle at 15% 8%, rgba(22, 163, 74, 0.2), transparent 33%),
-		radial-gradient(circle at 85% 18%, rgba(15, 31, 26, 0.08), transparent 36%),
-		linear-gradient(180deg, #f6fbf8 0%, #eef6f1 100%);
+		radial-gradient(circle at 15% 8%, rgba(22, 163, 74, 0.36), transparent 33%),
+		radial-gradient(circle at 85% 18%, rgba(15, 31, 26, 0.12), transparent 36%),
+		linear-gradient(180deg, var(--bg-header) 0%, var(--bg-canvas) 100%);
 }
 
 .glass-card {
@@ -165,7 +166,7 @@ html {
 
 @media (max-width: 767px) {
 	.ambient-layer {
-		background: linear-gradient(180deg, #f6fbf8 0%, #eef6f1 100%);
+		background: linear-gradient(180deg, var(--bg-header) 0%, var(--bg-canvas) 100%);
 	}
 }
 
